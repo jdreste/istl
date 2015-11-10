@@ -1,0 +1,17 @@
+[
+  {
+    "name": "The Morning After",
+    "podcast": "http://www.insidestl.com/Portals/0/ITD_Podcast.xml",
+    "class" : "morning-after"
+  },
+  {
+    "name": "The Press Box",
+    "podcast": "http://insidestlaudio.com/Pressbox/PressBox_Podcast.xml",
+    "class" : "press-box"
+  },
+  {
+    "name": "The Big Show",
+    "podcast": "http://www.insidestlaudio.com//HomeStretch/Stretch_Podcast.xml",
+    "class" : "big-show"
+  }
+]
