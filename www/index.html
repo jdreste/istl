@@ -11,6 +11,7 @@
     <script src="lib/google/googlejsapi.js"></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular/angular-resource.min.js"></script>
+    <script src="lib/ngWebAudio/webaudio.js"></script>
     <script src="lib/onsen/js/onsenui.js"></script>
 
     <!-- CSS dependencies -->
@@ -107,6 +108,22 @@
         	background-image: url('img/pressbox.jpg');
         }
 
+        .item-thum.afternoon-drive {
+        	background-image: url('img/afternoon-drive.png');
+        }
+        
+        .item-thum.brian-stull {
+        	background-image: url('img/brian-stull.png');
+        }
+        
+        .item-thum.we-are-live {
+        	background-image: url('img/we-are-live.png');
+        }
+        
+        .item-thum.first-pitch {
+        	background-image: url('img/first-pitch.png');
+        }
+        
         .item-title {
             font-size: 15px;
             font-weight: 500;
@@ -139,7 +156,7 @@
         <ons-tab active="true" page="home.html">
             <div class="tab">
                 <ons-icon icon="ion-home" class="tab-icon"></ons-icon>
-                <div class="tab-label">Timeline</div>
+                <div class="tab-label">Player</div>
             </div>
         </ons-tab>
 
@@ -152,31 +169,34 @@
     </ons-tabbar>
 
     <ons-template id="home.html">
-        <ons-navigator>
             <ons-page ng-controller="playerController">
                 <ons-toolbar>
-                    <div class="left"><ons-toolbar-button ng-click="doSomething()"><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
-                    <div class="center">Home</div>
+                    <div class="left"><ons-toolbar-button><ons-icon icon="ion-compose"></ons-icon></ons-toolbar-button></div>
+                    <div class="center">Player</div>
                     <div class="right"></div>
                 </ons-toolbar>
 				
 				<div>
-					<ons-button modifier="large--cta" ng-click="playAudio()">
-					  {{listenbtntext}}
+					<ons-button modifier="large--cta" >
+					  Now Playing: {{listenbtntext}}
 					</ons-button>
 				</div>
+				
+				<div style="text-align: center; margin-top: 30px;"><ons-button ng-click="playLive()">Listen Live</ons-button></div>
+				<div style="text-align: center; margin-top: 30px;"><ons-button>Play</ons-button></div>
+				<div style="text-align: center; margin-top: 30px;"><ons-button ng-click="pause()">Pause</ons-button></div>
+				<div style="text-align: center; margin-top: 30px;"><ons-button ng-click="stop()">Stop</ons-button></div>
             </ons-page>
-        </ons-navigator>
     </ons-template>
 
     <ons-template id="shows.html">
-	    <ons-navigator var="app.podnav">
+    	<ons-navigator var="app.podnav">
 	    	<ons-page ng-controller="showlistController">
 	            <ons-toolbar>
 	                <div class="center">Shows</div>
 	            </ons-toolbar>
 		            <ons-list style="margin: -1px 0">
-		                <ons-list-item modifier="chevron" class="item" ng-repeat="show in shows" ng-click="gotoShow(show)">
+		                <ons-list-item modifier="chevron" class="item" ng-repeat="show in shows" ng-click="gotoShow( show )">
 		                    <ons-row>
 		                        <ons-col width="60px">
 		                            <div class="item-thum {{show.class}}"></div>
@@ -184,7 +204,7 @@
 		                        <ons-col>
 		                            <header>
 		                                <span class="item-title">{{show.name}}</span>
-		                                <span class="item-label">5h</span>
+		                                <span class="item-label"></span>
 		                            </header>
 		                            <p class="item-desc">Show Description</p>
 		                        </ons-col>
@@ -192,7 +212,7 @@
 		                </ons-list-item>
 		            </ons-list>
 	        </ons-page>
-		   </ons-navigator>
+	   	</ons-navigator>
 	   </ons-template>	    
 	   
 	   <ons-template id="podcasts.html">
@@ -202,7 +222,7 @@
 		            </ons-toolbar>
 		            <div ng-repeat="feed in feeds">
 			            <ons-list style="margin: -1px 0">
-			                <ons-list-item modifier="chevron" class="item" ng-repeat="item in feed.entries" onclick="">
+			                <ons-list-item modifier="chevron" class="item" ng-repeat="item in feed.entries" ng-click="openPodCast( item.link )">
 			                    <ons-row>
 			                        <ons-col width="60px">
 			                            <div class="item-thum {{class}}"></div>
@@ -213,7 +233,7 @@
 			                                <span class="item-label">5h</span>
 			                            </header>
 			                            <p class="item-desc">{{item.publishedDate | date:'d-MM-yyyy HH:mm'}}</p>
-			                            <p class="item-desc">{{url}}</p>
+			                            <p class="item-desc">{{}}</p>
 			                        </ons-col>
 			                    </ons-row>
 			                </ons-list-item>

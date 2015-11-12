@@ -13,5 +13,25 @@
     "name": "The Big Show",
     "podcast": "http://www.insidestlaudio.com//HomeStretch/Stretch_Podcast.xml",
     "class" : "big-show"
+  },
+  {
+    "name": "The Afternoon Drive",
+    "podcast": "http://insidestlaudio.com/AfternoonDrive/AfternoonDrive_Podcast.xml",
+    "class" : "afternoon-drive"
+  },
+  {
+    "name": "The Brian Stull Show",
+    "podcast": "http://insidestlaudio.com/StullShow/BrianStull_Podcast.xml",
+    "class" : "brian-stull"
+  },
+  {
+    "name": "We Are Live",
+    "podcast": "http://insidestlaudio.com/WeAreLive/WeAreLive_Podcast.xml",
+    "class" : "we-are-live"
+  },
+  {
+    "name": "The First Pitch",
+    "podcast": "http://insidestlaudio.com/FirstPitch/FirstPitch_Podcast.xml",
+    "class" : "first-pitch"
   }
 ]

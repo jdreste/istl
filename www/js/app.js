@@ -2,14 +2,67 @@
 
 
 
-var appModule = angular.module('app', ['onsen', 'ngResource']);
+var appModule = angular.module('app', ['onsen', 'ngResource', 'ngWebAudio']);
 	
-	appModule.controller('playerController', function ($scope) {
-		$scope.listenbtntext = "Listen Live";
+	appModule.service('nowPlaying', function ($rootScope, WebAudio) {
+		this.currentURL = '';
+		this.isPlaying = false;
+		this.audio = WebAudio('http://1601.live.streamtheworld.com:80/WGNUAM_SC', {buffer: false});
 		
-		$scope.playAudio = function() {
-			$scope.listenbtntext = "Playing";
+		this.udpateURL = function( url ) {
+			this.currentURL = url;
 		};
+		
+		this.playLiveStream = function() {
+			this.audio.stop();
+			this.audio = {};
+			this.audio = WebAudio('http://1601.live.streamtheworld.com:80/WGNUAM_SC', {buffer: false});
+			this.audio.play();
+		};
+		
+		this.playPodCast = function() {
+			this.audio.stop();
+			this.audio = {};
+			this.audio = WebAudio(this.currentURL, {buffer: false});
+			this.audio.play();
+		};
+		
+		this.stopAudio = function() {
+			this.audio.stop();
+		};
+		
+		this.pauseAudio = function() {
+			this.audio.pause();
+		};
+		
+	
+	});
+	
+	appModule.controller('playerController', function ($rootScope, $scope, WebAudio, nowPlaying) {
+		
+		//var audioURL = (nowPlaying.currentURL !== '') ? nowPlaying.currentURL : 'http://www.insidestlaudio.com/ITD_Audio/111115-4TMA.mp3'; 
+		$scope.listenbtntext = nowPlaying.currentURL;
+	    
+          $scope.buffer = function() {
+
+          }
+          
+          $scope.playLive = function() {
+          	$scope.listenbtntext = "Live Stream";
+          	nowPlaying.playLiveStream();
+          }
+          $scope.play = function() {
+            $scope.listenbtntext = "Buffering...";
+            nowPlaying.playPodCast();
+          }
+          $scope.pause = function() {
+			nowPlaying.pauseAudio();
+			$scope.listenbtntext = "Paused";
+          }
+          $scope.stop = function() {
+			nowPlaying.stopAudio();
+            $scope.listenbtntext = "Stopped";
+          }
 	});
 	
 	appModule.factory('FeedLoader', function ($resource) {
@@ -31,12 +84,17 @@ var appModule = angular.module('app', ['onsen', 'ngResource']);
 			return feeds;
 		};
 	})
-	.controller('podcastController', function ($scope, FeedList) {
+	.controller('podcastController', function ($scope, FeedList, nowPlaying) {
 		
 		$scope.feeds = FeedList.get(app.podnav.getCurrentPage().options.url);
 		
 		$scope.class = app.podnav.getCurrentPage().options.class;
 		
+		$scope.openPodCast = function(link) {
+			nowPlaying.udpateURL(link);
+			app.podnav.pushPage("home.html");
+			nowPlaying.playPodCast();
+		};
 		
 	});
 
